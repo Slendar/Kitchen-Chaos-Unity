@@ -33,6 +33,15 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private void Start()
     {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
+        gameInput.OnInteractAlternateAction += GameInput_OnInteractAlternateAction; ;
+    }
+
+    private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlternate(this);
+        }
     }
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
@@ -70,7 +79,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             //Cannot move towards moveDirection, so try to move only on X axis
             Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0).normalized;
-            canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionX, moveDistance);
+            canMove = moveDirection.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionX, moveDistance);
             if (canMove)
             {
                 //Can move only on the X axis
@@ -80,7 +89,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             {
                 //Cannot move only on the X axis, so try to move only on Z axis
                 Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z).normalized;
-                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionZ, moveDistance);
+                canMove = moveDirection.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionZ, moveDistance);
                 if (canMove)
                 {
                     //Can move only on the Z axis
@@ -89,12 +98,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                 else
                 {
                     // Cannot move in any direction, so moveDir is 0
-                    moveDirection = Vector3.zero;
                 }
             }
         }
 
-        transform.position += moveDirection * moveDistance;
+        if (canMove)
+        {
+            transform.position += moveDirection * moveDistance;
+        }
 
         isWalking = moveDirection != Vector3.zero;
 
