@@ -399,7 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plateKitchenObject: {fileID: -5118230773022967415}
-  iconTameplate: {fileID: 4649687320243657895}
+  iconTameplate: {fileID: 5803161609935421518}
 --- !u!114 &8388404788996598663
 MonoBehaviour:
   m_ObjectHideFlags: 0

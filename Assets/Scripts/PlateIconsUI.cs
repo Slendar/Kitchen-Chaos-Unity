@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlateIconsUI : MonoBehaviour
 {
     [SerializeField] private PlateKitchenObject plateKitchenObject;
-    [SerializeField] private PlateIconSingleUI iconTameplate;
+    [SerializeField] private Transform iconTameplate;
 
     private void Awake()
     {
@@ -19,16 +19,34 @@ public class PlateIconsUI : MonoBehaviour
 
     private void PlateKitchenObject_OnIngredientAdded(object sender, PlateKitchenObject.OnIngredientAddedEventArgs e)
     {
-        UpdateVisual(e.kitchenObjectSO);
+        UpdateVisual();
+        //or AddIngredientVisual(e.kitchenObjectSO)
     }
 
-    private void UpdateVisual(KitchenObjectSO kitchenObjectSO)
+    private void UpdateVisual()
     {
-        /*foreach(KitchenObjectSO kitchenObjectSO in plateKitchenObject.GetKitchenObjectSOList())
-        {*/
-            Transform iconTransform = Instantiate(iconTameplate.transform, transform);
+        foreach(Transform child in transform)
+        {
+            if (child != iconTameplate)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        foreach(KitchenObjectSO kitchenObjectSO in plateKitchenObject.GetKitchenObjectSOList())
+        {
+            Transform iconTransform = Instantiate(iconTameplate, transform);
             iconTransform.gameObject.SetActive(true);
-            iconTameplate.SetKitchenObjectSO(kitchenObjectSO);
-        //}
+            iconTransform.GetComponent<PlateIconSingleUI>().SetKitchenObjectSO(kitchenObjectSO);
+        }
     }
+
+    /*Alternate way to change with parameter pass
+    private void AddIngredientVisual(KitchenObjectSO kitchenObjectSO)
+    {
+        Transform iconTransform = Instantiate(iconTameplate, transform);
+        iconTransform.gameObject.SetActive(true);
+        iconTransform.GetComponent<PlateIconSingleUI>().SetKitchenObjectSO(kitchenObjectSO);
+    }
+    */
 }
