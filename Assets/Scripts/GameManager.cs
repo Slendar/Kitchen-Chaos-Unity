@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
     private State state;
     private float waitingToStartTimer = 1f;
     private float countdownToStartTimer = 3f;
-    private float gamePlayingTimer = 0;
+    private float gamePlayingTimer;
     private float gamePlayingTimerMax = 10f;
 
     private void Awake()
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         state = State.WaitingToStart;
+
+        gamePlayingTimer = gamePlayingTimerMax;
     }
 
     private void Update()
@@ -47,8 +50,6 @@ public class GameManager : MonoBehaviour
                 countdownToStartTimer -= Time.deltaTime; 
                 if(countdownToStartTimer < 0f)
                 {
-                    gamePlayingTimer = gamePlayingTimerMax;
-
                     state = State.GamePlaying;
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -67,11 +68,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool IsGamePlaying()
-    {
-        return state == State.GamePlaying;
-    }
-
     public bool IsCountdownToStartActive()
     {
         return state == State.CountdownToStart;
@@ -82,13 +78,19 @@ public class GameManager : MonoBehaviour
         return countdownToStartTimer;
     }
 
+    public bool IsGamePlaying()
+    {
+        return state == State.GamePlaying;
+    }
+
+    public float GetGamePlayingTimerNormalized()
+    {
+        return 1 - (gamePlayingTimer / gamePlayingTimerMax);
+    }
+
     public bool IsGameOver()
     {
         return state == State.GameOver;
     }
 
-    public float GetGamePlayingTimerNormalized()
-    {
-        return 1- (gamePlayingTimer / gamePlayingTimerMax);
-    }
 }

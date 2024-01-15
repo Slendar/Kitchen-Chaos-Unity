@@ -16,8 +16,15 @@ public class PlatesCounter : BaseCounter
     private float platesSpawnedAmount;
     private float platesSpawnedAmountMax = 4f;
 
+    private void Start()
+    {
+        spawnPlateTimer = spawnPlateTimerMax;
+    }
+
     private void Update()
     {
+        if (!GameManager.Instance.IsGamePlaying()) return;
+
         spawnPlateTimer += Time.deltaTime;
         if (spawnPlateTimer > spawnPlateTimerMax)
         {
