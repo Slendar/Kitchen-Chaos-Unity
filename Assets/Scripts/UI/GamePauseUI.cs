@@ -21,14 +21,15 @@ public class GamePauseUI : MonoBehaviour
         
         optionsButton.onClick.AddListener(() => {
             OptionsUI.Instance.Show();
+            Hide();
         });
-
     }
 
     private void Start()
     {
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+        OptionsUI.Instance.OnOptionsUIClose += OptionsUI_OnOptionsUIClose;
 
         Hide();
     }
@@ -41,6 +42,11 @@ public class GamePauseUI : MonoBehaviour
     private void GameManager_OnGameUnpaused(object sender, System.EventArgs e)
     {
         Hide();
+    }
+
+    private void OptionsUI_OnOptionsUIClose(object sender, System.EventArgs e)
+    {
+        Show();
     }
 
     private void Show()
