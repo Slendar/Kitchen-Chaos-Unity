@@ -20,7 +20,7 @@ public class GamePauseUI : MonoBehaviour
         }); 
         
         optionsButton.onClick.AddListener(() => {
-            OptionsUI.Instance.Show();
+            OptionsUI.Instance.Show(Show);
             Hide();
         });
     }
@@ -29,7 +29,6 @@ public class GamePauseUI : MonoBehaviour
     {
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
-        OptionsUI.Instance.OnOptionsUIClose += OptionsUI_OnOptionsUIClose;
 
         Hide();
     }
@@ -44,14 +43,11 @@ public class GamePauseUI : MonoBehaviour
         Hide();
     }
 
-    private void OptionsUI_OnOptionsUIClose(object sender, System.EventArgs e)
-    {
-        Show();
-    }
-
     private void Show()
     {
         gameObject.SetActive(true);
+
+        continueButton.Select();
     }
     
     private void Hide()
