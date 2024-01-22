@@ -25,6 +25,7 @@ public class DeliveryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
         waitingRecipeSOList = new List<RecipeSO>();
     }
 
