@@ -78,6 +78,16 @@ public class SoundManager : MonoBehaviour
     {
         PlayRandomSoundFromArray(audioClipRefsSO.footsteps, position, volume);
     }
+    
+    public void PlayCountdownSound()
+    {
+        PlayRandomSoundFromArray(audioClipRefsSO.warning, Vector3.zero);
+    }
+    
+    public void PlayWarningSound(Vector3 position)
+    {
+        PlayRandomSoundFromArray(audioClipRefsSO.warning, position);
+    }
 
     public void ChangeVolume()
     {
